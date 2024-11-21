@@ -2,6 +2,7 @@
 #include <vector>
 #include <cstdlib>
 #include <ctime>
+#include <limits>
 
 using namespace std;
 
@@ -64,18 +65,73 @@ void aiMove() {
     }
 }
 
+int minimax(vector<char> board, bool isMaximizing) {
+    if (checkWin()) {
+        return isMaximizing ? -1 : 1;
+    }
+    if (checkDraw()) {
+        return 0;
+    }
+
+    if (isMaximizing) {
+        int bestScore = numeric_limits<int>::min();
+        for (int i = 0; i < 9; ++i) {
+            if (board[i] != 'X' && board[i] != 'O') {
+                char temp = board[i];
+                board[i] = 'O';
+                int score = minimax(board, false);
+                board[i] = temp;
+                bestScore = max(score, bestScore);
+            }
+        }
+        return bestScore;
+    } else {
+        int bestScore = numeric_limits<int>::max();
+        for (int i = 0; i < 9; ++i) {
+            if (board[i] != 'X' && board[i] != 'O') {
+                char temp = board[i];
+                board[i] = 'X';
+                int score = minimax(board, true);
+                board[i] = temp;
+                bestScore = min(score, bestScore);
+            }
+        }
+        return bestScore;
+    }
+}
+
+void minimaxAiMove() {
+    int bestMove = -1;
+    int bestScore = numeric_limits<int>::min();
+    for (int i = 0; i < 9; ++i) {
+        if (board[i] != 'X' && board[i] != 'O') {
+            char temp = board[i];
+            board[i] = 'O';
+            int score = minimax(board, false);
+            board[i] = temp;
+            if (score > bestScore) {
+                bestScore = score;
+                bestMove = i;
+            }
+        }
+    }
+    board[bestMove] = 'O';
+}
+
 int main() {
     char currentPlayer = 'X';
-    bool playAgainstAI;
-    cout << "Do you want to play against the AI? (1 for Yes, 0 for No): ";
-    cin >> playAgainstAI;
+    int gameMode;
+    cout << "Choose game mode:\n1. Two-player\n2. Play against random AI\n3. Play against Minimax AI\nEnter your choice: ";
+    cin >> gameMode;
 
     while (true) {
         displayBoard();
-        if (currentPlayer == 'X' || !playAgainstAI) {
+        if (currentPlayer == 'X' || gameMode == 1) {
             playerMove(currentPlayer);
-        } else {
+        } else if (gameMode == 2) {
             aiMove();
+        } else if (gameMode == 3) {
+            minimaxAiMove();
         }
         if (checkWin()) {
             displayBoard();
