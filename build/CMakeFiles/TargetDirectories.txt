@@ -1,0 +1,3 @@
+/mnt/c/Users/sveno/Desktop/bapa/Tic-tac-toe-C-/build/CMakeFiles/TicTacToe.dir
+/mnt/c/Users/sveno/Desktop/bapa/Tic-tac-toe-C-/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/sveno/Desktop/bapa/Tic-tac-toe-C-/build/CMakeFiles/rebuild_cache.dir
