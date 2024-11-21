@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
@@ -50,11 +52,31 @@ void playerMove(char player) {
     }
 }
 
+void aiMove() {
+    srand(time(0));
+    int move;
+    while (true) {
+        move = rand() % 9;
+        if (board[move] != 'X' && board[move] != 'O') {
+            board[move] = 'O';
+            break;
+        }
+    }
+}
+
 int main() {
     char currentPlayer = 'X';
+    bool playAgainstAI;
+    cout << "Do you want to play against the AI? (1 for Yes, 0 for No): ";
+    cin >> playAgainstAI;
+
     while (true) {
         displayBoard();
-        playerMove(currentPlayer);
+        if (currentPlayer == 'X' || !playAgainstAI) {
+            playerMove(currentPlayer);
+        } else {
+            aiMove();
+        }
         if (checkWin()) {
             displayBoard();
             cout << "Player " << currentPlayer << " wins!" << endl;
